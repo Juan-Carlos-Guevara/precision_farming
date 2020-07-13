@@ -1,0 +1,154 @@
+{% extends 'base/base.html' %}  
+
+{% block content %}
+
+<style>
+  .redon {
+    border: 1px solid;
+    border-color:#9A9696;
+    border-radius: 4px;
+    }
+</style>
+
+<form method="POST" action="/insert_organization" enctype="multipart/form-data">  
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left" style="margin-left:2.3%;">   
+          <br>
+          <div class="row">
+            <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+              <h3> <a href="/organization"><i class="fa fa-arrow-circle-o-left"></i> </a></h3>
+            </div>
+            <div class="col-md-5 col-sm-12 col-xs-12 form-group" style="margin-top: 0.4%">
+              <h4>Crear organización</h4>
+            </div>
+          </div>
+          <h6>Configuración / <a href="/organization"> Organizaciones </a>/ Crear Organización </h6>
+        </div>
+      </div>
+
+      {% if msg_create %}
+        <div class="col-md-6 col-sm-12 col-xs-12">
+          <br>
+          <div class="alert alert-info alert-dismissible fade in disappear" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>                
+            <strong><h4><i class="fa fa-info-circle"></i><font size="3"> Error de validacion!  </font></strong></h4> 
+              Verifica el correo electrónico, número de celular o número de NIT/RUT de la organización, ya que uno de estos datos se encuentran registrado en el sistema.
+          </div>     
+        </div>
+      {% endif%}
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12" style="margin-top: 3%">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Datos básicos </h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            
+            <div class="x_content">
+              <section class="content invoice">
+                <div class="row">
+                  <div class="col-xs-4">
+                    <input name="organization_photo" id="file-input" type="file" style="margin-top: 4%;"/>
+                    <p class="text-muted well well-sm no-shadow" style="margin-top: 10%;">
+                      <img id="imgSalida" width="100%" height="230em" src="/static/images/empresa.jpg" style="margin-top: 3%;"/>
+                    </p>
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-xs-8" style="margin-top: 8%;">
+                    <div id="demo-form2" data-parsley-validate class="form-horizontal form-label-left"></form>
+                      <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12" for="first-name">Nombre <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" name="name" required="required" class="form-control col-md-7 col-xs-12 redon">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12" for="last-name">NIT/RUT <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text"  name="legal_id" required="required" class="form-control col-md-7 col-xs-12 redon">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="middle-name" class="control-label col-md-4 col-sm-3 col-xs-12">Correo Electrónico <span class="required">*</span> </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input name="email" class="form-control col-md-6 col-xs-12 redon" type="email" name="middle-name">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12" for="last-name">Sitio web 
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" name="website" required="required" class="form-control col-md-7 col-xs-12 redon">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12" for="last-name">Teléfono de contacto
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" name="phone" required="required" class="form-control col-md-7 col-xs-12 redon">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12" >Pais <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select style="font-family:verdana;" id ='country' class="form-control filter redon" name="country">
+                            {% for country in country %} 
+                            <option value = "{{ country.0 }}"> {{ country.1 }} </option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Cuidad <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                           <select id="city" class="form-control filter redon" name="city_id" >
+                            {% for json_city in json_city %} 
+                             <option value = "{{  json_city["id"] }}"> {{  json_city["name"] }} </option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12" for="last-name">Dirección
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" name="addres" required="required" class="form-control col-md-7 col-xs-12 redon">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                  <div style="text-align: center;">
+                    <a class="btn btn-danger " href="/organization">Cancelar</a>
+                    <a class="btn btn-primary" href="/admin_create_organization">Limpiar</a>
+                    <button type="submit" class="btn btn-success">Agregar</button>
+                  </div>
+                </div>               
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>
+
+
+
+{% endblock %}

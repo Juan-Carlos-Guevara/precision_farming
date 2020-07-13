@@ -1,0 +1,108 @@
+{% extends 'base/base.html' %}  
+
+{% block content %}
+
+<style>
+  .redon {
+    border: 1px solid;
+    border-color:#9A9696;
+    border-radius: 4px;
+    }
+</style>
+
+
+  <div class="right_col" role="main" >
+    <div class="">
+      <div class="page-title">
+        <div class="title_left" style="margin-left:2.3%;">   
+          <br>
+          <h6>Servicios / Etapas del Cultivo / Etapa calculada </h6>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12" style="margin-top: 3%">
+          <div class="x_panel">
+            <div class="x_title">
+               <h2>Etapa calculada</h2>  
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            
+            <div class="x_content">
+        
+                <section class="content invoice"> 
+             
+                  {% for stage in stage %} 
+
+                    <div class="x_content" style="margin-left:1%">
+                      <section class="content invoice">
+                        <div class="row">
+                          <form method="POST" action="/insert_stage" enctype="multipart/form-data"> 
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                            <div class="row">
+                              <div class="col-xs-5">
+                                <input type="hidden" name="stage_id" value="{{ stage.0 }}" />
+                                <input type="hidden" name="image_url" value="{{ image_name }}.png" />
+                                <p class="text-muted well well-sm no-shadow" style="margin-top: 6%;">
+                                  <img width="100%" src="/static/images/stages_calculation/{{ image_name }}.png" style="margin-top: 0.5%;"/>
+                                </p>
+                              </div>
+                                    <!-- /.col -->
+                              <div class="col-xs-7" style="margin-top: 4%;">
+                                <div id="demo-form2" data-parsley-validate class="form-horizontal form-label-left"></form>
+                                  <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Etapa
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                      <input type="text" class="form-control col-md-7 col-xs-12" style="border-radius: 4px;" value="{{ stage.1 }}"  disabled="disabled">
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">descripción
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                      <textarea class="form-control" rows="4" class="form-control col-md-7 col-xs-12" disabled="disabled" style="border-radius: 4px;">{{ stage.2 }}
+                                      </textarea>
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Comentarios
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                      <textarea class="form-control" rows="4" name="notes" class="form-control col-md-7 col-xs-12" style="border-radius: 4px;" ></textarea>
+                                    </div>
+                                  </div>
+                                  <br>
+                                  <div class="form-group" >
+                                    <div style="text-align: center;">
+                                      <a class="btn btn-danger" href="/stages_crop" onclick=" return confirm('¿Quieres realizar un nuevo calculo? se perdera los datos calculados ')" >Salir</a>
+                                      <button type="sumi" class="btn btn-success">Guardar</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </form>                   
+                        </div>               
+                      </section>
+                    </div>    
+                  {% endfor %}    
+
+                </section>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}

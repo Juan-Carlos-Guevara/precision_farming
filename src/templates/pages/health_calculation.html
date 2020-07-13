@@ -1,0 +1,86 @@
+{% extends 'base/base.html' %}  
+
+{% block content %}
+
+<style>
+  .redon {
+    border: 1px solid;
+    border-color:#9A9696;
+    border-radius: 4px;
+    }
+</style>
+
+  <div class="right_col" role="main" >
+    <div class="">
+      <div class="page-title">
+        <div class="title_left" style="margin-left:2.3%;">   
+          <br>
+          <h6>Servicios / Salud de las plantas</h6>
+        </div>
+      </div>
+
+      {% if msg_humidity  %}
+        <div class="col-md-6 col-sm-12 col-xs-12" style="margin-top: 2%">
+          <div class="alert alert-success alert-dismissible fade in disappear" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>                
+            <strong><h4><i class="fa fa-check-circle"></i><font size="3"> Datos guardados con éxito! </font></strong></h4> 
+            Los datos calculados se guardaron exitosamente, puedes verificar en la métrica de histórico de la salud de las plantas . 
+          </div>     
+         </div>
+      {% endif%}
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12" style="margin-top: 3%">  
+          <div class="x_panel">
+            <div class="x_title">
+               <h2>Salud de las plantas</h2>  
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+              <form method="POST" action="/predict_health" enctype="multipart/form-data"> 
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <section class="content invoice"> 
+                  <p> Con este servicio, tendrás la opción de conocer el estado de salud (Clorofila, Xantófila y Caroteno), 
+                      en el que se encuentran los diferentes <font size="3"> <span class="label label-success">cultivos</span></font> 
+                      por medio de una imagen fotográfica que podrás adjuntar
+                  </p>
+                  <div class="row" style="margin-left: 25%;">
+                    <div class="col-xs-8">
+                      <div class="input-group" style="margin-top:5%">
+                        <span class="input-group-btn">
+                          <span class="btn btn-default btn-file">
+                            <i class="fa fa-upload"></i> <input name ="layer1" type="file" id="imgInp" required>
+                          </span>
+                        </span>
+                        <div>                        
+                          <input name ="layer1" type="text" class="form-control" readonly> 
+                        </div>                        
+                      </div>
+
+                      <div class="ln_solid"></div>
+
+                      <div style="text-align: center;">
+                        <a class="btn btn-primary" href="/humidity_calculation">Limpiar</a>
+                        <button class="btn btn-success">Calcular</button>
+                      </div>
+
+                    </div>
+                  </div>              
+                </section>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>     
+    </div>
+  </div>
+
+
+{% endblock %}

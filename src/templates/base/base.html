@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% block header %}
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %} precision_farming {% endblock %}</title>
+
+    <!-- style -->
+    <link href="{{ url_for('static', filename = 'css/style.css')  }}" 
+          rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="{{ url_for('static', filename = 'vendors/bootstrap/dist/css/bootstrap.min.css')  }}" 
+          rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{{ url_for('static', filename = 'vendors/font-awesome/css/font-awesome.min.css') }}" 
+          rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{{ url_for('static', filename = 'vendors/nprogress/nprogress.css') }}" 
+          rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="{{ url_for('static', filename = '/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css') }}" >
+    <!-- bootstrap-daterangepicker -->
+    <link href="{{ url_for('static', filename = 'vendors/bootstrap-daterangepicker/daterangepicker.css') }}" 
+          rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="{{ url_for('static', filename = 'build/css/custom.min.css') }}" 
+          rel="stylesheet">
+    <!-- select2 -->
+    <link href="{{ url_for('static', filename = 'vendors/select2/dist/css/select2.min.css') }}" 
+          rel="stylesheet"> 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesline-height:100%heet" />     
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     <!-- iCheck -->
+    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename = 'vendors/iCheck/skins/flat/green.css') }}" 
+          rel="stylesheet"> 
+    <!-- Datatables -->
+    <link href="{{ url_for('static', filename = 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css') }}" 
+          rel="stylesheet"> 
+    <link href="{{ url_for('static', filename = 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css') }}" 
+          rel="stylesheet">
+    <link href="{{ url_for('static', filename = 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css') }}" 
+          rel="stylesheet"> 
+    <link href="{{ url_for('static', filename = 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css') }}" 
+          rel="stylesheet"> 
+    <link href="{{ url_for('static', filename = 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css') }}" 
+          rel="stylesheet"> 
+
+  </head> 
+  <body class="nav-md" style="font-family:verdana;">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title"><i class="fa fa-pagelines"></i> <span><strong>Witfarming </strong></span></a>
+            </div>
+            <div class="clearfix"></div>
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="{{ session['profile_photo'] }}" alt="..." class="img-circle profile_img">
+              </div>
+              <div class="profile_info">
+                <span>Bievenido,</span>
+                <h2>{{ session['user']}}</h2>
+              </div>
+            </div>  
+            <!-- /menu profile quick info -->
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-desktop"></i> Servicios <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      {% if session['roles'] is not none or session['type'] == 'A' %}
+                        <li><a href="/stages_crop">Estapas del cultivo</a></li>
+                      {% endif %}
+                      {% if ( '1' in session['roles'] or '3' in session['roles'] or '5' in session['roles'] or session['type'] == 'A' ) %}
+                        <li><a href="/humidity_ground">Humedad del terreno</a></li>
+                      {% endif%}
+                      {% if ( '1' in session['roles'] or '4' in session['roles'] or '5' in session['roles'] or session['type'] == 'A' ) %}
+                        <li><a href="/health_calculation">Salud de las plantas</a></li>
+                      {% endif%}
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-user"></i> Usuario <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      {% if session['type'] == 'A' %}
+                        <li><a href="/admin_users">Todos los usuarios</a></li>
+                      {% endif %}
+                      {% if ( '1' in session['roles'] or session['type'] == 'A' ) %}
+                        <li><a href="/users">Usuarios</a></li>
+                      {% endif %}
+                        <li><a href="/standar_edit_users/{{ session['user_id'] }}">Perfil</a></li>
+                        <li><a href="#">Ayuda</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-bar-chart"></i> Métricas <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      {% if session['roles'] is not none or session['type'] == 'A' %}
+                        <li><a href="/stage_attachments/">Histórico de etapas</a></li>
+                      {% endif %}
+                      {% if ( '1' in session['roles'] or '3' in session['roles'] or '5' in session['roles'] or session['type'] == 'A' ) %}
+                        <li><a href="/humidity_attachments/">Histórico de la humedad del terreno</a></li>
+                      {% endif%}
+                      {% if ( '1' in session['roles'] or '4' in session['roles'] or '5' in session['roles'] or session['type'] == 'A' ) %}
+                        <li><a href="/health_attachments/">Histórico de la salud de las plantas</a></li>
+                      {% endif%}
+                    </ul>
+                  </li>
+                  {% if ( '1' in session['roles'] or session['type'] == 'A' ) %}
+                  <li><a><i class="fa fa-gears"></i>Configuración <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      {% if session['type'] == 'A' %}
+                        <li><a href="/organization">Organizaciones</a></li>
+                      {% endif %}
+                        <li><a href="/edit_organization/{{ session['organization_id'] }}">Mi organización</a></li>
+                        <li><a href="/crops_org">Tipos de cultivo</a></li>
+                    </ul>
+                  </li>
+                  {% endif %}
+              </div>
+              <!-- 
+              <div class="menu_section">
+                <h3>Enlaces de interes</h3>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-soundcloud"></i> Agricultura Precision<span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="e_commerce.html">¿Qué es?</a></li>
+                      <li><a href="projects.html">¿Cómo se Aplica?</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-rss-square"></i> Imágenes Satelitales  <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="#level1_1">Landsat 8</a></li>
+                        <li><a href="#level1_2">Sentinel 2</a></li>
+                    </ul>
+                  </li>                  
+                  <li><a><i class="fa fa-line-chart"></i> Análisis y cálculos  <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="#level1_1">Índice de Vegetación de Diferencia Normalizado</a></li>
+                        <li><a href="#level1_2">Índice Diferencial de Agua Normalizado</a></li>
+                    </ul>
+                  </li> 
+                  <li><a><i class="fa fa-lightbulb-o"></i> Machine learning <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="#level1_1">Convolutional Neural Networks</a></li>
+                        <li><a href="#level1_2">Inteligencia artificial</a></li>
+                    </ul>
+                  </li>     
+                </ul>
+              </div>
+              -->
+
+            </div>
+            <!-- /sidebar menu -->
+
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+              <a data-toggle="tooltip" data-placement="top" title="Settings">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Lock">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+              </a>
+            </div>
+            <!-- /menu footer buttons -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+              <ul class="nav navbar-nav navbar-right">
+                <li class="">                
+                  <a  style="line-height:100%" href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ session['profile_photo'] }}" alt="">{{ session['user'] }}<p style="margin-left:40px"><small>{{ session['organization_name'] }}</small>
+                    <span class=" fa fa-angle-down"></span>
+                    </p>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    {% for oranization in session['data'] %}
+                      {% if oranization.3 != session['organization_id'] %}
+                        <li><a href="/enter_user/{{ session['user_id'] }}/{{ oranization.3 }}">{{ oranization.4 }}</a></li>
+                      {% endif  %}
+                    {% endfor  %}
+                      <li><hr><a href="/logout"><i class="fa fa-sign-out pull-right"></i> Cerrar sesión</a> <br></li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+        {% endblock %}
+        
+        <!-- page content -->
+        {% block content %}
+                
+        {% endblock %}
+      
+        <!-- /page content -->
+
+        <!-- footer content -->
+        {% block Footer %}
+        <footer>
+          <div class="pull-right">
+            © 2020 Copyright: <a href="#">Precision Farming</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        {% endblock %}
+        <!-- /footer content -->
+      </div>
+    </div>
+     <!-- jQuery -->
+    <script src="{{ url_for('static', filename = 'vendors/jquery/dist/jquery.min.js') }}"></script>
+    <!-- Bootstrap -->
+    <script src="{{ url_for('static', filename = 'vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <!-- FastClick -->
+    <script src="{{ url_for('static', filename = 'vendors/fastclick/lib/fastclick.js') }}"></script>
+    <!-- NProgress -->
+    <script src="{{ url_for('static', filename = 'vendors/nprogress/nprogress.js') }}"></script>
+    <!-- Chart.js -->
+    <script src="{{ url_for('static', filename = 'vendors/Chart.js/dist/Chart.min.js') }}"></script>
+    <!-- jQuery Sparklines -->
+    <script src="{{ url_for('static', filename = 'vendors/jquery-sparkline/dist/jquery.sparkline.min.js') }}"></script>
+    <!-- Flot -->
+    <script src="{{ url_for('static', filename = 'vendors/Flot/jquery.flot.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'vendors/Flot/jquery.flot.pie.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'vendors/Flot/jquery.flot.time.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'vendors/Flot/jquery.flot.stack.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'vendors/Flot/jquery.flot.resize.js') }}"></script>    
+    <!-- Flot plugins -->
+    <script src="{{ url_for('static', filename = 'vendors/flot.orderbars/js/jquery.flot.orderBars.js') }}"></script>    
+    <script src="{{ url_for('static', filename = 'vendors/flot-spline/js/jquery.flot.spline.min.js') }}"></script>    
+    <script src="{{ url_for('static', filename = 'vendors/flot.curvedlines/curvedLines.js') }}"></script>    
+    <!-- DateJS -->
+    <script src="{{ url_for('static', filename = 'vendors/DateJS/build/date.js') }}"></script>    
+    <!-- bootstrap-daterangepicker -->
+    <script src="{{ url_for('static', filename = 'vendors/moment/min/moment.min.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>  
+    <!-- Custom Theme Scripts -->
+    <script src="{{ url_for('static', filename = 'build/js/custom.min.js') }}"></script>  
+    <!-- Image Scripts -->
+    <script src="{{ url_for('static', filename = 'js/image.js') }}"></script>  
+    <!-- country -->
+    <script src="{{ url_for('static', filename = 'js/country.js') }}"></script>
+    <!-- select2 -->
+    <script src="{{ url_for('static', filename = 'vendors/select2/dist/js/select2.min.js') }}"></script>  
+     <!-- Datatables -->
+    <script src="{{ url_for('static', filename = 'vendors/datatables.net/js/jquery.dataTables.min.js') }}"></script>  
+    <script src="{{ url_for('static', filename = 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>  
+    <script src="{{ url_for('static', filename = 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>  
+    <script src="{{ url_for('static', filename = 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js') }}"></script>  
+    <script src="{{ url_for('static', filename = 'vendors/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>  
+    <script src="{{ url_for('static', filename = 'vendors/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>  
+    <script src="{{ url_for('static', filename = 'vendors/datatables.net-buttons/js/buttons.print.min.js') }}"></script>  
+    <script src="{{ url_for('static', filename = 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>  
+    <script src="{{ url_for('static', filename = 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js') }}"></script>  
+    <script src="{{ url_for('static', filename = 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>  
+    <script src="{{ url_for('static', filename = 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js') }}"></script>  
+    <script src="{{ url_for('static', filename = 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js') }}"></script>  
+    <script src="{{ url_for('static', filename = 'vendors/jszip/dist/jszip.min.js') }}"></script>  
+    <script src="{{ url_for('static', filename = 'vendors/pdfmake/build/pdfmake.min.js') }}"></script>  
+    <script src="{{ url_for('static', filename = 'vendors/pdfmake/build/vfs_fonts.js') }}"></script>  
+
+     <!-- iCheck -->
+    <script src="{{ url_for('static', filename = 'vendors/iCheck/icheck.min.js') }}"></script>  
+     <!-- bootstrap-progressbar -->
+    <script src="{{ url_for('static', filename = 'vendors/bootstrap-progressbar/bootstrap-progressbar.min.js') }}"></script>  
+
+    <!-- image_browse -->
+    <script src="{{ url_for('static', filename = 'js/image_browse.js') }}"></script>   
+    
+    <!-- filter_country -->
+    <script src="{{ url_for('static', filename = 'js/filter_country.js') }}"></script>  
+
+    <!-- alert -->
+    <script src="{{ url_for('static', filename = 'js/alert.js') }}"></script>  
+
+    <!-- alert -->
+    <script src="{{ url_for('static', filename = 'js/password.js') }}"></script>  
+
+   
+  </body>
+</html>

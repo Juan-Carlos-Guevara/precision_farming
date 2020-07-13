@@ -1,0 +1,85 @@
+{% extends 'base/base.html' %}  
+
+{% block content %}
+
+
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left" style="margin-left:2.3%;">   
+          <br>
+          <h6>Configuración / Organizaciones</h6>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12" style="margin-top: 3%">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Organizaciones</h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <a class="btn btn-primary" href="/admin_create_organization" style="margin-top:2%" > <li class="fa fa-edit"> </li> &nbsp;Crear organización </a>
+            <div class="x_content" style="margin-top:2%">
+              <table
+                id="datatable-responsive"
+                class="table table-striped table-bordered dt-responsive nowrap jambo_table bulk_action"
+                cellspacing=""
+                width="100%">
+                <thead>
+                  <tr>
+                    <th>#Id </th>
+                    <th>Nombre </th>
+                    <th>Contacto</th>
+                    <th>Estado </th>
+                    <th>Dirección </th>
+                    <th>website</th>
+                    <th>Cultivos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for list_organization in list_organization%}
+                  <tr>
+                    <td>{{ list_organization.0 }}</td>
+                    <td>
+                      <a href="/admin_edit_organization/{{ list_organization.0}}">
+                       {{ list_organization.1 }}<br>
+                        NIT/RUT: {{ list_organization.2 }} </a>       
+                    </td>
+                    <td>{{ list_organization.3 }} <br>
+                        {{ list_organization.4 }}
+                    </td>
+                    {% if list_organization.5 %}
+                    <td style="vertical-align: middle;"><font size="3"><span class="label label-success">Habilitada</span></td>
+                    {% else %}
+                    <td style="vertical-align: middle;"><font size="3"><span class="label label-default">Deshabilitada</span></font></td>
+                    {% endif %}
+                    <td>
+                      {{ list_organization.6 }} <br>
+                      {{ list_organization.7 }}, {{ list_organization.8 }}
+                    </td>
+                    <td>{{ list_organization.9 }}</td>
+                    {% if list_organization.10 == '' %}
+                      <td>No tiene cultivos asociados</td>
+                    {% else %}  
+                      <td>{{ list_organization.10 }}</td>
+                    {% endif %}     
+                  </tr>  
+                  {% endfor %}     
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}
